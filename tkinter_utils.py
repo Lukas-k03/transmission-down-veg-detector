@@ -65,6 +65,16 @@ class WindowRenderer:
         # Debug
         print(f"Finished re-rendering {len(self.images) + len(self.image_copies)} images.\n")
 
+    # Copies images into image_copies overwriting changes
+    def reset_images(self):
+        # Debug
+        print("Resetting images...")
+
+        self.image_copies = self.images
+
+        # Debug
+        print("Reset complete.\n")
+
 
 
 
