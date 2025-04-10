@@ -14,7 +14,7 @@ class WindowRenderer:
 
         # Application variables
         self.images = []
-        self.images_selected = 0
+        self.image_selected = 0
         self.selected_image = None
         self.veg_image = None
         self.down_image = None
@@ -36,7 +36,7 @@ class WindowRenderer:
                 exit()
 
         # Default selected images to image[0]
-        self.selected_image = self.images[self.images_selected]
+        self.selected_image = self.images[self.image_selected]
         self.veg_image = self.selected_image
         self.down_image = self.selected_image
 
@@ -73,17 +73,30 @@ class WindowRenderer:
 
 
     # Render windows with any changes
-    def renderWindow(self):
+    def renderWindow(self, reset = False, new_veg = None, new_down = None):
         # Debug
         print(f"Re-rendering window...")
 
-        self.selected_image = self.images[self.images_selected]
-        self.veg_image = self.selected_image
-        self.down_image = self.selected_image
+        if reset:
+            self.selected_image = self.images[0]
+        else:
+            self.selected_image = self.images[self.image_selected]
+
+        # Update vegetation image
+        if new_veg is None:
+            self.veg_image = self.selected_image
+        else:
+            self.veg_image = new_veg
+
+        # Update down image
+        if new_down is None:
+            self.down_image = self.selected_image
+        else:
+            self.down_image = new_down
 
         tk.Label(self.root, image = self.selected_image).grid(row = 1, column = 0, columnspan = 2, padx = 10, pady = 10)
-        tk.Label(self.root, image = self.selected_image).grid(row = 1, column = 3, columnspan = 2, padx = 10, pady = 10)
-        tk.Label(self.root, image = self.selected_image).grid(row = 1, column = 5, columnspan = 2, padx = 10, pady = 10)
+        tk.Label(self.root, image = self.veg_image).grid(row = 1, column = 3, columnspan = 2, padx = 10, pady = 10)
+        tk.Label(self.root, image = self.down_image).grid(row = 1, column = 5, columnspan = 2, padx = 10, pady = 10)
 
         # Debug
         print(f"Re-rendering window complete.")
@@ -93,31 +106,44 @@ class WindowRenderer:
         # Debug
         print(f"Navigating to last image...")
 
-        if self.images_selected > 0:
-            self.images_selected -= 1
+        if self.image_selected > 0:
+            self.image_selected -= 1
 
         # Re-render window
         self.renderWindow()
 
         # Debug
-        print(f"Navigation to image {self.images_selected} complete.\n")
+        print(f"Navigation to image {self.image_selected} complete.\n")
 
     # Navigates to next image (cannot exceed len(self.images)
     def nextImage(self):
         # Debug
         print(f"Navigating to next image...")
 
-        if self.images_selected < len(self.images):
-            self.images_selected += 1
+        if self.image_selected < len(self.images):
+            self.image_selected += 1
 
         # Re-render window
         self.renderWindow()
 
         # Debug
-        print(f"Navigation to image {self.images_selected} complete.\n")
+        print(f"Navigation to image {self.image_selected} complete.\n")
 
     def reset(self):
-        pass
+        # Debug
+        print("Resetting window...")
+
+        # Render based off selection
+        self.selected_image = self.images[0]
+
+        # Update ticker tracker
+        self.image_selected = 0
+
+        # Re-render window
+        self.renderWindow(reset = True)
+
+        # Debug
+        print("Resetting window complete.\n")
 
     def runVegDetection(self):
         pass
