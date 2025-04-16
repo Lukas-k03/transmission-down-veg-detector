@@ -2,23 +2,7 @@ import numpy as np
 import cv2
 
 def sobelDetect(image_path, output_path=None):
-    """
-    Performs Sobel horizontal edge detection on an input image and labels the top 3 
-    horizontal power lines as A, B, C. The labels and lines are overlaid on the original image,
-    but line detection only occurs within the middle 75% of the image width.
-    
-    Parameters:
-    -----------
-    image_path : str
-        Path to the input image
-    output_path : str, optional
-        Path to save the output image. If None, the image will be displayed but not saved.
-        
-    Returns:
-    --------
-    numpy.ndarray
-        The edge-detected image with labeled top lines overlaid on the original image
-    """
+
     # Read the image
     img = cv2.imread(image_path)
     

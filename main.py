@@ -29,6 +29,6 @@ if __name__ == '__main__':
         window_name = f"Detected Image {i+1}"
         cv2.imshow(window_name, result)
 
-    cv2.waitKey(0)  # Wait until any window is closed or key is pressed
+    cv2.waitKey(0)
     cv2.destroyAllWindows()
         
