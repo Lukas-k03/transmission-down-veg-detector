@@ -1,5 +1,5 @@
 from tkinter_utils import *
-from vegDetect import sobelDetect
+from imagePowerlineDetect import sobelDetect
 import cv2
 
 
