@@ -21,6 +21,8 @@ if __name__ == '__main__':
         "images/test1.png",
         "images/test3.png",
         "images/test5.png",
+        "images/downTest1.png",
+        "images/downTest2.png"
 
     ]
 
