@@ -172,20 +172,20 @@ def sobelDetect(imagePath, outputPath=None):
             cv2.putText(resultImg, label, (midPoint[0] - 20, midPoint[1] + 10),
                       cv2.FONT_HERSHEY_SIMPLEX, 2.0, color, 4)
     
-    # Calculate continuity metrics
+    #calculate continuity metrics
     phaseAContinuity = np.sum(phaseAPresence) / totalColumns
     phaseBContinuity = np.sum(phaseBPresence) / totalColumns
     phaseCContinuity = np.sum(phaseCPresence) / totalColumns
     
-    # Set minimum continuity threshold
+    #set minimum continuity threshold
     continuityThreshold = 0.85  # 85% continuity required
     
-    # Evaluate each phase
+    #evaluate each phase
     phaseA_ok = len(phaseAPoints) > 1 and phaseAContinuity >= continuityThreshold
     phaseB_ok = len(phaseBPoints) > 1 and phaseBContinuity >= continuityThreshold
     phaseC_ok = len(phaseCPoints) > 1 and phaseCContinuity >= continuityThreshold
     
-    # Create report text about continuity
+    #create text about continuity
     continuity_text = []
     if len(phaseAPoints) > 1:
         continuity_percent = int(phaseAContinuity * 100)
@@ -202,7 +202,7 @@ def sobelDetect(imagePath, outputPath=None):
         status = "OK" if phaseC_ok else "FAIL"
         continuity_text.append(f"C: {continuity_percent}% ({status})")
     
-    # Determine overall pass/fail
+    #determine overall pass/fail
     detected_phases = []
     if phaseA_ok:
         detected_phases.append('A')
@@ -216,17 +216,17 @@ def sobelDetect(imagePath, outputPath=None):
     all_present = num_phases == 3
     status = "PASS" if all_present else "FAIL"
     
-    # Create a black overlay at the bottom for the status text
+    #create a black overlay at the bottom for the status text
     h, w = resultImg.shape[:2]
     overlay_height = int(h * 0.12)  # 12% of image height for the overlay
     overlay = resultImg[h-overlay_height:h, :].copy()
     cv2.rectangle(resultImg, (0, h-overlay_height), (w, h), (0, 0, 0), -1)
     
-    # Add status text
+    #add status text
     status_text = f"Phases: {num_phases}/3 ({phases_text}) - {status}"
     status_color = (0, 255, 0) if status == "PASS" else (0, 0, 255)  # Green for pass, Red for fail
     
-    # Calculate text position to center it
+    #calculate text position to center it
     text_size = cv2.getTextSize(status_text, cv2.FONT_HERSHEY_SIMPLEX, 1.0, 2)[0]
     text_x = (w - text_size[0]) // 2
     text_y = h - overlay_height + 30
@@ -234,7 +234,7 @@ def sobelDetect(imagePath, outputPath=None):
     cv2.putText(resultImg, status_text, (text_x, text_y),
               cv2.FONT_HERSHEY_SIMPLEX, 1.0, status_color, 2)
     
-    # Add continuity information below
+    #add continuity information below
     continuity_status = " | ".join(continuity_text)
     text_size = cv2.getTextSize(continuity_status, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)[0]
     text_x = (w - text_size[0]) // 2
